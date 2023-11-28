@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Page</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"
+          rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/css/shopping.css}"/>
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<!--<nav th:replace="~{components/navbar-shopping :: navbar-cart}"></nav>-->
+<!-- Navbar -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3 my-3" th:each="product : ${productPage.content}">
+            <div class="card d-flex flex-column h-100" th:each="img : ${product.productImageList}">
+                <img th:src="${img.path}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.name}"></h5>
+                    <p class="card-text" th:text="${product.description}"></p>
+                </div>
+                <div class="mb-5 d-flex justify-content-around">
+                    <h6 class="price p-2"
+                        th:text="'Price: $' + ${productPriceService.getProductPriceRepository(product.id)}"></h6>
+                    <button class="btn">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center" th:if="${productPage.totalPages > 0}">
+        <li th:class="${productPage.number == 0} ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" th:href="@{/shopping(size=${productPage.size}, page=0)}">First</a>
+        </li>
+        <li th:each="pageNumber : ${pageNumbers}"
+            th:class="${pageNumber == productPage.number + 1} ? 'page-item active' : 'page-item'">
+            <a class="page-link" th:href="@{/shopping(size=${productPage.size}, page=${pageNumber})}" th:text="${pageNumber}"></a>
+        </li>
+        <li th:class="${productPage.number == productPage.totalPages - 1} ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" th:href="@{/shopping(size=${productPage.size}, page=${productPage.totalPages - 1})}">Last</a>
+        </li>
+    </ul>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+</html>
