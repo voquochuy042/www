@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"
+          rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+</head>
+<body>
+<h1 class="text-center">INSERT PRODUCT</h1>
+<div class="container">
+    <form method="post" th:action="@{/insert}" th:object="${product}">
+        <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            <input th:field="*{name}" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input th:field="*{price}" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select th:field="*{category}" class="form-select">
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"
+                >
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">ADD Product</button>
+    </form>
+</div>
+</body>
+</html>

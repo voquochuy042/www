@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"
+          rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+</head>
+<body>
+<h1>List Candidate</h1>
+<table class="container table table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Experience</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="candiate : ${candidatePage.content}">
+        <td th:text="${candiate.fullName}"></td>
+        <td th:text="${candiate.phone}"></td>
+        <td th:text="${candiate.email}"></td>
+        <td>
+            <a class="btn btn-success" th:href="@{/exp/{id}(id=${candiate.id})}">EXP</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<ul class="pagination justify-content-center" th:if="${candidatePage.totalPages > 0}">
+    <li th:each="pageNumber : ${pageNumbers}"  th:class="${pageNumber == candidatePage.number + 1 ? 'page-item active' : 'page-item'}">
+        <a th:href="@{/home(size=${candidatePage.size}, page=${pageNumber})}"
+           th:text="${pageNumber}"
+            class="page-link"
+        ></a>
+
+    </li>
+</ul>
+</body>
+</html>

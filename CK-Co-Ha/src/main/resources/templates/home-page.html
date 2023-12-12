@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"
+          rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+</head>
+<body>
+    <h1 class="text-center text-success">List Category</h1>
+    <div class="container">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>
+                    <a>List Product Of Category</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:object="${categories}" th:each="category : ${categories}">
+                <td th:text="${category.name}"></td>
+                <td>
+                    <a th:href="@{/category/{id}(id=${category.id})}">
+                        List Product
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
