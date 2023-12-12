@@ -30,48 +30,48 @@ public class PaginationSpringApplication {
         SpringApplication.run(PaginationSpringApplication.class, args);
     }
 //    @Bean
-//    CommandLineRunner commandLineRunner() {
-//        Faker faker = new Faker();
-//        Random random = new Random();
-//        return args -> {
-//            List<Candidate> candidates = candidateRepository.findByRole(1);
-//            candidates.forEach(System.out::println);
-//            for (int i = 0; i < 200; i++) {
-//                Candidate candidate = Candidate.builder()
-//                        .email(faker.internet().emailAddress())
-//                        .phone(faker.phoneNumber().cellPhone())
-//                        .fullName(faker.name().fullName())
-//                        .build();
-//                candidateRepository.save(candidate);
-//            }
-//            for (int i = 0; i < 9; i++) {
-//                long canId = (long) random.nextInt(3 - 1) + 1;
-//                Experience experience = Experience.builder()experience
-//                        .role(getRandomRole())
-//                        .fromDate(getRandomDate())
-//                        .toDate(getRandomDate())
-//                        .companyName(faker.company().name())
-//                        .workDescription(faker.lorem().sentence())
-//                        .candidate(Candidate.builder().id(canId).build())
-//                        .build();
-//                experienceRepository.save(experience);
-//
-//            }
-//        };
-//    }
-//
-//    private Roles getRandomRole() {
-//        Roles[] roles = Roles.values();
-//        int randomIndex = (int) (Math.random() * roles.length);
-//        return roles[randomIndex];
-//    }
-//
-//    private LocalDate getRandomDate() {
-//        // Generate a random date within a specific range (adjust the range as needed)
-//        LocalDate startDate = LocalDate.of(2000, 1, 1);
-//        long daysToAdd = (long) (Math.random() * ChronoUnit.DAYS.between(startDate, LocalDate.now()));
-//        return startDate.plusDays(daysToAdd);
-//    }
+    CommandLineRunner commandLineRunner() {
+        Faker faker = new Faker();
+        Random random = new Random();
+        return args -> {
+            List<Candidate> candidates = candidateRepository.findByRole(1);
+            candidates.forEach(System.out::println);
+            for (int i = 0; i < 200; i++) {
+                Candidate candidate = Candidate.builder()
+                        .email(faker.internet().emailAddress())
+                        .phone(faker.phoneNumber().cellPhone())
+                        .fullName(faker.name().fullName())
+                        .build();
+                candidateRepository.save(candidate);
+            }
+            for (int i = 0; i < 9; i++) {
+                long canId = (long) random.nextInt(3 - 1) + 1;
+                Experience experience = Experience.builder()
+                        .role(getRandomRole())
+                        .fromDate(getRandomDate())
+                        .toDate(getRandomDate())
+                        .companyName(faker.company().name())
+                        .workDescription(faker.lorem().sentence())
+                        .candidate(Candidate.builder().id(canId).build())
+                        .build();
+                experienceRepository.save(experience);
+
+            }
+        };
+    }
+
+    private Roles getRandomRole() {
+        Roles[] roles = Roles.values();
+        int randomIndex = (int) (Math.random() * roles.length);
+        return roles[randomIndex];
+    }
+
+    private LocalDate getRandomDate() {
+        // Generate a random date within a specific range (adjust the range as needed)
+        LocalDate startDate = LocalDate.of(2000, 1, 1);
+        long daysToAdd = (long) (Math.random() * ChronoUnit.DAYS.between(startDate, LocalDate.now()));
+        return startDate.plusDays(daysToAdd);
+    }
 
 
 }
