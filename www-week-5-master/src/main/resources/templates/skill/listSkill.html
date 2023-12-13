@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skills</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<h2>Skill Of <span th:text="${job.getName()}"></span></h2>
+    <div th:switch="${skills}">
+        <div th:case="null">
+            <h1>No skills yet!</h1>
+        </div>
+        <div th:case="*">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Skill Name</th>
+                    <th>Skill Type</th>
+                    <th>Skill Description</th>
+                    <th>Skill Level</th>
+                    <th>More Information</th>
+                    <td><a class="btn btn-primary" th:href="@{/{jobId}/skill/show-add-form(jobId=${job.getId()})}">Insert</a></td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="skillInfo : ${skills}">
+                        <td th:text="${skillInfo.skill.getId()}"></td>
+                        <td th:text="${skillInfo.skill.getSkillName()}"></td>
+                        <td th:text="${skillInfo.skill.getSkillType()}"></td>
+                        <td th:text="${skillInfo.skill.getSkillDesc()}"></td>
+                        <td th:text="${skillInfo.getSkillLevel()}"></td>
+                        <td th:text="${skillInfo.getMoreInfo()}"></td>
+                        <td>
+                            <form action="#" th:action="@{/{jobId}/{skillId}/deleteSkill(jobId=${job.getId()}, skillId=${skillInfo.getSkill().getId()})}" method="post">
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

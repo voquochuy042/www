@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container w-50 my-5 p-3 border border-warning">
+    <div class="mb-3 mt-3 d-flex justify-content-center">
+        <label class="display-6 mx-5"
+               th:text="${user.getFirstName()}+' '+${user.getMiddleName()}+' '+${user.getLastName()}"></label>
+        <a class="btn btn-info mx-5" th:href="@{/user/show-log-form}">Logout</a>
+    </div>
+    <div class="mb-3 d-flex  mt-3">
+        <label class="form-label mx-2">Email:    </label>
+        <p th:text="${user.getEmail()}"></p>
+    </div>
+    <div class="d-flex mt-3">
+        <label class="form-label mx-2">Mobile:  </label>
+        <p th:text="${user.getMobile()}"></p>
+    </div>
+    <div class="d-flex mt-3">
+        <label class="form-label mx-2">Register at:  </label>
+        <p th:text="${user.getRegisteredAt()}"></p>
+    </div>
+    <div class="mt-3">
+        <label class="form-label mx-2">Intro:</label>
+        <p class="mx-4" th:text="${user.getIntro()}"></p>
+    </div>
+    <div class="mt-3">
+        <ul class="mx-2">Profile:
+            <li th:each="element : ${user.getProfile().split(';')}" th:text="${element}"></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

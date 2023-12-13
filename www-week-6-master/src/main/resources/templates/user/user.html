@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<style>
+    div.page {
+        padding: 5px 5px;
+        display: inline-block;
+    }
+
+    div.page a.active {
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getLastName()}">User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showComment(e) {
+            let comment = e.parentElement.getElementsByTagName("div")[0].style.display
+            comment = comment === "block" ? "none" : "block";
+            e.parentElement.getElementsByTagName("div")[0].style.display = comment;
+        }
+    </script>
+</head>
+<body style="height: 100%">
+<!--<div class="w-100 p-3 border bg-info d-flex">-->
+<!--    <div class="w-25 h-100 border border-danger bg-light p-2">-->
+<!--        <div class="d-flex justify-content-center">-->
+<!--            <label class="h4 mx-5">Users</label>-->
+<!--            <a class="btn btn-success mx-5" th:href="@{show-log-form}">Logout</a>-->
+<!--        </div>-->
+<!--        <div class="mb-3 mt-3 d-flex">-->
+<!--            <label class="form-label w-25">Full name:</label>-->
+<!--            <p th:text="${user.getFirstName()}+ ' '+${user.getMiddleName()}+' '+${user.getLastName()}"></p>-->
+<!--        </div>-->
+<!--        <div class="mb-3 mt-3 d-flex">-->
+<!--            <label class="form-label w-25">Email:</label>-->
+<!--            <p th:text="${user.getEmail()}"></p>-->
+<!--        </div>-->
+<!--        <div class=" mt-3 d-flex">-->
+<!--            <label class="form-label w-25">Mobile:</label>-->
+<!--            <p th:text="${user.getMobile()}"></p>-->
+<!--        </div>-->
+<!--        <div class=" mt-3 d-flex">-->
+<!--            <label class="form-label w-25">Register at:</label>-->
+<!--            <p th:text="${user.getRegisteredAt()}"></p>-->
+<!--        </div>-->
+<!--        <div class=" mt-3 d-flex">-->
+<!--            <label class="form-label w-25">Profile:</label>-->
+<!--            <p th:text="${user.getProfile()}"></p>-->
+<!--        </div>-->
+<!--        <div class=" mt-3 d-flex">-->
+<!--            <label class="form-label w-25">Intro:</label>-->
+<!--            <p  th:text="${user.getIntro()}"></p>-->
+<!--        </div>-->
+<!--    </div>-->
+<div class="bg-light d-flex border border-3 border-danger" style="margin-left: 1%; margin-top: 10px; width: 98%; padding: 1%">
+    <div style="width: 90%">
+        <form action="#" th:action="@{/addPost}" th:object="${post}" method="post">
+            <h5 th:text="${user.getFirstName()}+' '+${user.getMiddleName()}+' '+${user.getLastName()}"></h5>
+            <input type="text" class="form-control" placeholder="Meta title" th:field="*{metaTitle}">
+            <input type="text" class="form-control" placeholder="Title" th:field="*{title}">
+            <textarea class="form-control" placeholder="Enter the content" th:field="*{content}"></textarea>
+            <textarea class="form-control" placeholder="Summary" th:field="*{summary}"></textarea>
+            <button type="submit" class="btn btn-primary mt-2">Post</button>
+        </form>
+    </div>
+    <div class="d-flex flex-column" style="width: 10%; margin-left: 10px">
+        <a class="link-info" th:href="@{/user/infoUser}" th:text="${user.getFirstName()}+' '+${user.getMiddleName()}+' '+${user.getLastName()}"></a>
+        <a class="btn btn-info w-75" th:href="@{/user/show-log-form}">Log out</a>
+    </div>
+</div>
+<div class="w-100 pt-2" style="padding-left: 1%;">
+    <div class="mb-2" style="width: 99%;" th:each="post : ${postPage.content}">
+        <div class="bg-light p-3 border border-danger">
+            <div class="d-flex">
+                <h5 th:text="${post.user.firstName}+' '+${post.user.middleName}+' '+${post.user.lastName}"></h5>
+                <p class="h5 mx-3 text-decoration-underline" style="color: grey;" th:text="${post.updatedAt}"></p>
+            </div>
+            <div class="border border-success">
+                <div class="border-bottom border-3 p-3" style="border-color: grey;">
+                    <p class="h5 text-info" th:text="${post.title}"></p>
+                    <p class="h5" th:text="${post.content}"></p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            th:data-bs-target="'#'+${post.id}">
+                        Comments
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade mt-3" style="align-self: center; margin-left: 10%; width: 1100px;" th:id="${post.id}">
+            <div class="modal-dialog" style="margin: 0">
+                <div class="modal-content" style="width: 1100px;">
+                    <div class="modal-header pt-2">
+                        <h5 class="modal-title">Comments</h5>
+                        <button type="button" class="close btn btn-danger" data-bs-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="border mt-2 border-3 p-3" style="border-color: grey;"
+                             th:each="comment : ${post.postComments}">
+                            <div class="d-flex">
+                                <h5 th:text="${comment.user.firstName}+' '+${comment.user.middleName}+' '+${comment.user.lastName}"></h5>
+                                <p class="h5 mx-3 text-decoration-underline" style="color: grey;"
+                                   th:text="${comment.publishedAt}"></p>
+                            </div>
+                            <p class="h5 text-info" th:text="${comment.title}"></p>
+                            <p class="h5" th:text="${comment.content}"></p>
+<!--                            <div>-->
+<!--                                <button class="btn btn-link" onclick="showComment(this)">Show comments</button>-->
+<!--                                <div style="display: none;">-->
+<!--                                    <div class="mb-3 border border-3 p-3"-->
+<!--                                         style="border-color: grey; margin-left: 30px;">-->
+<!--                                        <div class="d-flex">-->
+<!--                                            <h5>Nguyen Thanh Son</h5>-->
+<!--                                            <p class="h5 mx-3 text-decoration-underline" style="color: grey;">-->
+<!--                                                2023-11-09-->
+<!--                                            </p>-->
+<!--                                        </div>-->
+<!--                                        <p class="h5 text-info">Title comment</p>-->
+<!--                                        <p class="h5">comment of Nguyen Thanh Son</p>-->
+<!--                                        <div>-->
+<!--                                            <button class="btn btn-link" onclick="showComment(this)">Show-->
+<!--                                                comments-->
+<!--                                            </button>-->
+<!--                                            <div style="display: none;"></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="mt-2 d-flex">-->
+<!--                                            <input type="text" class="form-control" style="font-size: 20px;"-->
+<!--                                                   placeholder="Enter your comment">-->
+<!--                                            <button class="btn btn-primary mx-2"-->
+<!--                                                    style="font-size: 20px;">Enter-->
+<!--                                            </button>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="mb-3 border border-3 p-3"-->
+<!--                                         style="border-color: grey; margin-left: 30px">-->
+<!--                                        <div class="d-flex">-->
+<!--                                            <h5>Pham Thanh Son</h5>-->
+<!--                                            <p class="h5 mx-3 text-decoration-underline" style="color: grey;">-->
+<!--                                                2023-11-09-->
+<!--                                            </p>-->
+<!--                                        </div>-->
+<!--                                        <p class="h5 text-info">Title comment</p>-->
+<!--                                        <p class="h5">comment of Pham Thanh Son</p>-->
+<!--                                        <div>-->
+<!--                                            <button class="btn btn-link" onclick="showComment(this)">Show-->
+<!--                                                comments-->
+<!--                                            </button>-->
+<!--                                            <div style="display: none;"></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="mt-2 d-flex">-->
+<!--                                            <input type="text" class="form-control" style="font-size: 20px;"-->
+<!--                                                   placeholder="Enter your comment">-->
+<!--                                            <button class="btn btn-primary mx-2"-->
+<!--                                                    style="font-size: 20px;">Enter-->
+<!--                                            </button>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="mt-2 d-flex">-->
+<!--                                <input type="text" class="form-control" style="font-size: 20px;"-->
+<!--                                       placeholder="Enter your comment">-->
+<!--                                <button class="btn btn-primary mx-2" style="font-size: 20px;">Enter</button>-->
+<!--                            </div>-->
+                        </div>
+                        <form action="#" th:action="@{/addComment(postId=${post.id})}" th:object="${comment}" class="my-2 d-flex" method="post">
+                            <div style="width: 90%">
+                                <input type="text" class="form-control" style="font-size: 20px;"
+                                       placeholder="Enter your title comment" th:field="*{title}">
+                                <input type="text" class="form-control" style="font-size: 20px;"
+                                       placeholder="Enter your comment" th:field="*{content}">
+                            </div>
+                            <button class="btn btn-primary mx-2" type="submit" style="font-size: 20px;">Enter</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page" th:if="${postPage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/user/logIn(size=${postPage.size}, page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==postPage.number+1}? active"></a>
+</div>
+</body>
+</html>
